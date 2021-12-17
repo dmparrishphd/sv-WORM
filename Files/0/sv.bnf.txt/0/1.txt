@@ -1,0 +1,42 @@
+<character-sequence> ::= <character> | <character> <character>
+
+<record-terminator> ::=
+        < A <character-sequence>. Within an <sv>, each <record-
+        terminator> compares equal to each other <record-
+        terminator>. The first <character> of a <record-
+        terminator> shall be unequal to any <char>. >
+
+<field-separator> ::=
+        < A character sequence distinct from the <record-
+        terminator>. Within an <sv>, each <field-
+        separator> compares equal to each other <field-
+        separator>. The first <character> of a <field-
+        separator> shall be unequal to any <char>. >
+
+<char> ::=
+        < A single <character> that compares unequal to the
+        first <character> of a <record-terminator> as well as
+        unequal to the first <character> of a <field-separator>. >
+
+<> ::= |
+
+    ; i.e., emptiness, no character, etc.
+
+<word> ::= <> | <char> | <word> <char>
+
+<continuation> ::= <>
+        | <field-separator> <word>
+        | <continuation> <field-separator> <word>
+
+<record> ::= <record> <continuation> <record-terminator>
+
+    ; This specification does not require that all records have
+    ; the same number of <word>-s.
+
+<sv> ::= <> | <record> | <sv> <record>
+
+    ; An empty sequence satisfies this specification.
+
+    ; An application may map a given sequence that does not end
+    ; in a <record-terminator> to an sequence that does. Such a
+    ; mapping is indepedent of this specification.
